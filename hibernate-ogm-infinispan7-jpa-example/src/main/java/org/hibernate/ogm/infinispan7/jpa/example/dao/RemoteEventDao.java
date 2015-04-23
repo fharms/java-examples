@@ -29,7 +29,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.ogm.infinispan7.jpa.example.model.EventVO;
 import org.hibernate.ogm.infinispan7.jpa.example.model.RemoteEvent;
+import org.hibernate.ogm.infinispan7.jpa.example.model.Subscriber;
 
 /**
  * DAO for RemoteEvent
@@ -39,8 +41,24 @@ public class RemoteEventDao {
     @PersistenceContext(unitName = "RemoteEventQueue")
     private EntityManager em;
 
-    public void create(RemoteEvent entity) {
-        em.persist(entity);
+    public void registreClientId(String clientId) {
+        em.persist(new Subscriber(clientId));
+    }
+
+    public void unregistredClientId(String clientId) {
+        Subscriber subscriber = new Subscriber(clientId);
+        em.remove(em.merge(subscriber));
+    }
+
+    public void addEvent(EventVO entity) {
+        Query query = em.createQuery("FROM Subscriber s");
+        List<Subscriber> subscribers = query.getResultList();
+        for (Subscriber subscriber : subscribers) {
+            RemoteEvent remoteEvent = new RemoteEvent();
+            remoteEvent.setClientId(subscriber.getId());
+            remoteEvent.setEvent(entity);
+            em.persist(remoteEvent);
+        }
     }
 
     public int deleteByClientId(String clientId) {
@@ -51,7 +69,19 @@ public class RemoteEventDao {
         return remoteEvents.size();
     }
 
-    public List<RemoteEvent> listAllByClientId(String clientId) {
+    public List<RemoteEvent> retreiveEventsForClientId(String clientId) {
+        List<RemoteEvent> remoteEvents = listAllByClientId(clientId);
+        for (RemoteEvent remoteEvent : remoteEvents) {
+            em.remove(remoteEvent);
+        }
+        return remoteEvents;
+    }
+
+    private List<RemoteEvent> listAllByClientId(String clientId) {
+        if (clientId == null || em.getReference(Subscriber.class, clientId) == null) {
+            throw new IllegalArgumentException("Unknown subscriber, please registre a client first!");
+        }
+
         Query query = em.createQuery("FROM RemoteEvent r where r.clientId = :clientId");
         query.setParameter("clientId", clientId);
         return query.getResultList();

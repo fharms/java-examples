@@ -37,7 +37,9 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -46,15 +48,15 @@ public class RemoteEventDaoIT {
 
     @Inject
     private RemoteEventDao remoteEventDAO;
+    private String clientId1;
+    private String clientId2;
 
     @Deployment
     public static WebArchive createDeployment() {
         WebArchive webArchive = ShrinkWrap
                 .create(WebArchive.class)
                 .addClass(RemoteEventDao.class)
-                .addClass(RemoteEvent.class)
-                .addClass(EventVO.class)
-                .addClass(EventType.class)
+                .addPackage("org.hibernate.ogm.infinispan7.jpa.example.model")
                 .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                 .setManifest(
                         new StringAsset(
@@ -63,49 +65,66 @@ public class RemoteEventDaoIT {
         return webArchive;
     }
 
+    @Before
+    public void setup() {
+        clientId1 = UUID.randomUUID().toString();
+        remoteEventDAO.registreClientId(clientId1);
+        
+        clientId2 = UUID.randomUUID().toString();
+        remoteEventDAO.registreClientId(clientId2);
+    }
+
+    @After
+    public void shutdown() {
+        remoteEventDAO.unregistredClientId(clientId1);
+        remoteEventDAO.unregistredClientId(clientId2);
+    }
+
     @Test
     public void createRemoveEvent() throws IOException {
-        RemoteEvent entity = createTestEvent("My first event", EventType.ADD, UUID.randomUUID().toString());
-        remoteEventDAO.create(entity);
-        Assert.assertNotNull(entity.getId());
+        EventVO eventVO = createTestEvent("My first event", EventType.ADD);
+        remoteEventDAO.addEvent(eventVO);
+        Assert.assertNotNull(eventVO.getId());
     }
 
     @Test
     public void createDeleteByClientId() throws IOException {
-        String clientId = UUID.randomUUID().toString();
         for (int i = 0; i < 5; i++) {
-            RemoteEvent entity = createTestEvent(String.format("My #%s event", i), EventType.ADD, clientId);
-            remoteEventDAO.create(entity);
+            EventVO entity = createTestEvent(String.format("My #%s event", i), EventType.ADD);
+            remoteEventDAO.addEvent(entity);
         }
-        int deleteByClientId = remoteEventDAO.deleteByClientId(clientId);
-        Assert.assertEquals(deleteByClientId, 5);
+        int deleteByClientId = remoteEventDAO.deleteByClientId(clientId1);
+        Assert.assertEquals(5, deleteByClientId);
     }
 
     @Test
-    public void testlistAllByClientId() throws Exception {
-        String clientId = UUID.randomUUID().toString();
+    public void testretreiveByClientId() throws Exception {
         for (int i = 0; i < 5; i++) {
-            RemoteEvent entity = createTestEvent(String.format("My #%s event", i), EventType.DELETE, clientId);
-            remoteEventDAO.create(entity);
+            EventVO entity = createTestEvent(String.format("My #%s event", i), EventType.DELETE);
+            remoteEventDAO.addEvent(entity);
         }
-        createTestEvent(String.format("My #%s event", 99), EventType.UPDATE, UUID.randomUUID().toString());
-        List<RemoteEvent> events = remoteEventDAO.listAllByClientId(clientId);
-        Assert.assertEquals(events.size(), 5);
+     
+        List<RemoteEvent> events = remoteEventDAO.retreiveEventsForClientId(clientId2);
+        Assert.assertEquals(5, events.size());
         for (RemoteEvent remoteEvent : events) {
             Assert.assertEquals(EventType.DELETE, remoteEvent.getEvent().getEventType());
-            Assert.assertEquals(clientId, remoteEvent.getClientId());
+            Assert.assertEquals(clientId2, remoteEvent.getClientId());
+        }
+        
+        events = remoteEventDAO.retreiveEventsForClientId(clientId1);
+        Assert.assertEquals(5, events.size());
+        for (RemoteEvent remoteEvent : events) {
+            Assert.assertEquals(EventType.DELETE, remoteEvent.getEvent().getEventType());
+            Assert.assertEquals(clientId1, remoteEvent.getClientId());
         }
     }
 
-    private RemoteEvent createTestEvent(String eventText, EventType type, String clientId) throws IOException {
+    private EventVO createTestEvent(String eventText, EventType type) throws IOException {
         EventVO eventVO = new EventVO();
         eventVO.setEventType(type);
         eventVO.setEventObj(new String(eventText));
 
-        RemoteEvent entity = new RemoteEvent();
-        entity.setEvent(eventVO);
-        entity.setClientId(clientId);
-        return entity;
+        return eventVO;
     }
 
 }

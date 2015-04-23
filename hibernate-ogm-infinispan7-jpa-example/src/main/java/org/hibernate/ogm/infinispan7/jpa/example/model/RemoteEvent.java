@@ -24,18 +24,19 @@ package org.hibernate.ogm.infinispan7.jpa.example.model;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.TableGenerator;
 
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
-
-import java.lang.Override;
 
 @Entity
 @Indexed
@@ -48,7 +49,8 @@ public class RemoteEvent implements Serializable {
     @Column(name = "id", updatable = false, nullable = false)
     private Long id;
 
-    @Column(nullable = false)
+    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @JoinColumn(name = "id_eventvo", nullable = false, updatable = false)
     private EventVO event;
 
     @Field(analyze = Analyze.NO)

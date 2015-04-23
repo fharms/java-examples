@@ -3,6 +3,8 @@
   <persistence-unit name="RemoteEventQueue" transaction-type="JTA">
   	<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
         <class>org.hibernate.ogm.infinispan7.jpa.example.model.RemoteEvent</class>
+        <class>org.hibernate.ogm.infinispan7.jpa.example.model.Subscriber</class>
+        <class>org.hibernate.ogm.infinispan7.jpa.example.model.EventVO</class>
         <properties>
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />

@@ -8,6 +8,7 @@
       <property name="outputToConsole">true</property>
       <property name="jbossHome">${jboss.home}</property>
       <property name="allowConnectingToRunningServer">true</property>
+      <property name="javaVmArguments">-Xms1024m -Xmx2048m -XX:MaxPermSize=768m -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=y</property>
     </configuration>
   </container>
 </arquillian>
