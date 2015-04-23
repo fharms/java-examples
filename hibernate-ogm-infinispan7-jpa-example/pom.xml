@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    The MIT License
+    Copyright (c) 2014 Flemming Harms
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+    THE SOFTWARE.
+
+-->
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.hibernate.ogm.infinispan7.jpa.example</groupId>
+	<artifactId>hibernate-ogm-infinispan7-jpa-example</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.arquillian_core>1.1.8.Final</version.arquillian_core>
+		<version.junit>4.12</version.junit>
+		<version.hibernate-ogm>4.1.3.Final</version.hibernate-ogm>
+		<version.infinispan>7.1.1.Final</version.infinispan>
+		<version.wildfly>8.2.0.Final</version.wildfly>
+		<version.hibernate-search>5.1.0.Final</version.hibernate-search>
+		<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
+	</properties>
+	<inceptionYear>2014</inceptionYear>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.jboss.spec</groupId>
+				<artifactId>jboss-javaee-6.0</artifactId>
+				<version>3.0.2.Final</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>javax.annotation</groupId>
+				<artifactId>jsr250-api</artifactId>
+				<version>1.0</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate.ogm</groupId>
+				<artifactId>hibernate-ogm-bom</artifactId>
+				<version>${version.hibernate-ogm}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.jboss.arquillian</groupId>
+				<artifactId>arquillian-bom</artifactId>
+				<version>${version.arquillian_core}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.0-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>jsr250-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.ejb</groupId>
+			<artifactId>jboss-ejb-api_3.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.0_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.faces</groupId>
+			<artifactId>jboss-jsf-api_2.1_spec</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.ogm</groupId>
+			<artifactId>hibernate-ogm-infinispan</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.arquillian.junit</groupId>
+			<artifactId>arquillian-junit-container</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${version.junit}</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<finalName>hibernate-ogm-infinispan7-jpa-example</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.mycila</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
+					<properties>
+						<owner>Flemming Harms</owner>
+						<email>Flemming.Harms at gmail.com</email>
+					</properties>
+					<excludes>
+						<exclude>**/README</exclude>
+						<exclude>**/LICENSE</exclude>
+						<exclude>src/test/resources/**</exclude>
+						<exclude>src/main/resources/**</exclude>
+						<exclude>.forge_settings</exclude>
+						<exclude>bin/**</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+		<testResources>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/arquillian.xml</include>
+					<include>**/arquillian.launch</include>
+				</includes>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources</directory>
+				<filtering>true</filtering>
+				<excludes>
+					<exclude>**/arquillian.xml</exclude>
+					<exclude>**/arquillian.launch</exclude>
+				</excludes>
+			</testResource>
+		</testResources>
+	</build>
+	<profiles>
+		<profile>
+			<id>wildfly</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<version>2.18.1</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>integration-test</goal>
+									<goal>verify</goal>
+								</goals>
+								<configuration>
+									<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
+									<redirectTestOutputToFile>false</redirectTestOutputToFile>
+									<arquillian.launch>arquillian-wildfly-managed</arquillian.launch>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<artifactId>maven-dependency-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>unpack</id>
+								<phase>pre-integration-test</phase>
+								<goals>
+									<goal>unpack</goal>
+								</goals>
+								<configuration>
+									<artifactItems>
+										<artifactItem>
+											<groupId>org.wildfly</groupId>
+											<artifactId>wildfly-dist</artifactId>
+											<version>${version.wildfly}</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>${project.build.directory}</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>org.hibernate.ogm</groupId>
+											<artifactId>hibernate-ogm-modules-wildfly8</artifactId>
+											<type>zip</type>
+											<version>${version.hibernate-ogm}</version>
+											<overWrite>false</overWrite>
+											<outputDirectory>${jboss.home}/modules</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>org.hibernate</groupId>
+											<artifactId>hibernate-search-modules</artifactId>
+											<classifier>wildfly-8-dist</classifier>
+											<version>${version.hibernate-search}</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>${jboss.home}/modules</outputDirectory>
+										</artifactItem>
+										<artifactItem>
+											<groupId>org.infinispan</groupId>
+											<artifactId>infinispan-as-embedded-modules</artifactId>
+											<version>${version.infinispan}</version>
+											<type>zip</type>
+											<overWrite>false</overWrite>
+											<outputDirectory>${jboss.home}/modules</outputDirectory>
+										</artifactItem>
+									</artifactItems>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.wildfly</groupId>
+					<artifactId>wildfly-arquillian-container-managed</artifactId>
+					<version>8.2.0.Final</version>
+					<scope>test</scope>
+				</dependency>
+				<dependency>
+					<groupId>org.wildfly</groupId>
+					<artifactId>wildfly-embedded</artifactId>
+					<version>8.1.0.Final</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	<organization>
+		<name>Flemming Harms</name>
+	</organization>
+	<name>org.hibernate.ogm.infinispan7.jpa.example</name>
+</project>

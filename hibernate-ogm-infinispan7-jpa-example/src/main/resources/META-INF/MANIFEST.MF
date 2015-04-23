@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: fharms
+Dependencies: org.hibernate:ogm services, org.hibernate.ogm.infinispan services, org.hibernate.search.orm:5.1 services
