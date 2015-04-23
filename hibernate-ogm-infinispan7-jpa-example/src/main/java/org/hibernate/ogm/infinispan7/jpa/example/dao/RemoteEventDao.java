@@ -43,9 +43,12 @@ public class RemoteEventDao {
 
     public void registreClientId(String clientId) {
         em.persist(new Subscriber(clientId));
+        deleteByClientId(clientId); //clean up old remote events
     }
 
     public void unregistredClientId(String clientId) {
+        //no need to remove old events, this is handle by infinispan expiring reaper
+        //if some reason a subscriber is not removed this is also handled by the infinispan expiring reaper
         Subscriber subscriber = new Subscriber(clientId);
         em.remove(em.merge(subscriber));
     }
