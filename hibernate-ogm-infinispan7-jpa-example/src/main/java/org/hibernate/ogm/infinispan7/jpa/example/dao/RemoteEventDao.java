@@ -29,7 +29,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
+import org.hibernate.ogm.infinispan7.jpa.example.model.EventVO;
 import org.hibernate.ogm.infinispan7.jpa.example.model.RemoteEvent;
+import org.hibernate.ogm.infinispan7.jpa.example.model.Subscriber;
 
 /**
  * DAO for RemoteEvent
@@ -39,8 +41,50 @@ public class RemoteEventDao {
     @PersistenceContext(unitName = "RemoteEventQueue")
     private EntityManager em;
 
-    public void create(RemoteEvent entity) {
-        em.persist(entity);
+    public void registreClientId(String clientId) {
+        em.persist(new Subscriber(clientId));
+        deleteByClientId(clientId); //clean up old remote events
+    }
+
+    public void unregistredClientId(String clientId) {
+        //no need to remove old events, this is handle by infinispan expiring reaper
+        //if some reason a subscriber is not removed this is also handled by the infinispan expiring reaper
+        Subscriber subscriber = null;
+        if (clientId != null && (subscriber = em.find(Subscriber.class, clientId)) != null) {
+            em.remove(subscriber);
+        }
+    }
+    
+    public void removeAllSubscribers() {
+        Query query = em.createQuery("FROM Subscriber s");
+        
+        List<Subscriber> subscribers = query.getResultList();
+        for (Subscriber subscriber : subscribers) {
+            em.remove(subscriber);
+        }
+    }
+
+    public void addEvent(EventVO event, List<String> clientId) {
+        em.persist(event);
+        for (String id : clientId) {
+            if (id != null || em.find(Subscriber.class, id) != null) {
+                RemoteEvent remoteEvent = new RemoteEvent();
+                remoteEvent.setClientId(id);
+                remoteEvent.setEvent(event);
+                em.persist(remoteEvent); 
+            }
+        }
+    }
+    public void addEvent(EventVO event) {
+        Query query = em.createQuery("FROM Subscriber s");
+        List<Subscriber> subscribers = query.getResultList();
+        em.persist(event);
+        for (Subscriber subscriber : subscribers) {
+            RemoteEvent remoteEvent = new RemoteEvent();
+            remoteEvent.setClientId(subscriber.getId());
+            remoteEvent.setEvent(event);
+            em.persist(remoteEvent);
+        }
     }
 
     public int deleteByClientId(String clientId) {
@@ -51,7 +95,19 @@ public class RemoteEventDao {
         return remoteEvents.size();
     }
 
-    public List<RemoteEvent> listAllByClientId(String clientId) {
+    public List<RemoteEvent> retreiveEventsForClientId(String clientId) {
+        List<RemoteEvent> remoteEvents = listAllByClientId(clientId);
+        for (RemoteEvent remoteEvent : remoteEvents) {
+            em.remove(remoteEvent);
+        }
+        return remoteEvents;
+    }
+
+    private List<RemoteEvent> listAllByClientId(String clientId) {
+        if (clientId == null || em.find(Subscriber.class, clientId) == null) {
+            throw new IllegalArgumentException("Unknown subscriber, please registre a client first!");
+        }
+
         Query query = em.createQuery("FROM RemoteEvent r where r.clientId = :clientId");
         query.setParameter("clientId", clientId);
         return query.getResultList();

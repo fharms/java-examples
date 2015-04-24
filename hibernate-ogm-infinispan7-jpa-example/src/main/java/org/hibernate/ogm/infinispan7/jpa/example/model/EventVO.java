@@ -30,18 +30,36 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 
-@Embeddable
+import org.hibernate.annotations.GenericGenerator;
+
+@Entity
 public class EventVO implements Serializable {
 
     private static final long serialVersionUID = 276256458073698397L;
 
-    @Column(nullable = false)
-    private EventType EventType;
+    @Id
+    @GeneratedValue(generator = "eventvo_uuid")
+    @GenericGenerator(name = "eventvo_uuid", strategy = "uuid2")
+    @Column(name = "id", updatable = false, nullable = false)
+    private String id;
 
     @Column(nullable = false)
+    private EventType EventType;
+    
+    @Column(nullable = false)
     private byte[] obj;
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(final String id) {
+        this.id = id;
+    }
 
     public EventType getEventType() {
         return EventType;
@@ -70,5 +88,13 @@ public class EventVO implements Serializable {
         ByteArrayInputStream b = new ByteArrayInputStream(bytes);
         ObjectInputStream o = new ObjectInputStream(b);
         return o.readObject();
+    }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
     }
 }

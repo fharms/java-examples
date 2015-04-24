@@ -7,7 +7,9 @@
     <configuration>
       <property name="outputToConsole">true</property>
       <property name="jbossHome">${jboss.home}</property>
-      <property name="allowConnectingToRunningServer">true</property>
+      <property name="allowConnectingToRunningServer">false</property>
+      <!--  -XX:MaxPermSize=768m -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n -->
+      <property name="javaVmArguments">-Darquillian.debug=true -Djava.net.preferIPv4Stack=true -Xms1024m -Xmx2048m</property>
     </configuration>
   </container>
 </arquillian>

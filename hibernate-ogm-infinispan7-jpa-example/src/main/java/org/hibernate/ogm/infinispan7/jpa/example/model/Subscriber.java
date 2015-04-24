@@ -26,35 +26,27 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.search.annotations.Analyze;
-import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
 
 @Entity
 @Indexed
-public class RemoteEvent implements Serializable {
-    private static final long serialVersionUID = -1935334468086191742L;
+public class Subscriber implements Serializable {
 
+    private static final long serialVersionUID = -5552944209589173345L;
+    
     @Id
-    @GeneratedValue(generator = "event_uuid")
-    @GenericGenerator(name = "event_uuid", strategy = "uuid2")
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(name = "id", updatable = false, nullable = false, unique = true)
     private String id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_eventvo", nullable = false, updatable = false)
-    private EventVO event;
-
-    @Field(analyze = Analyze.NO)
-    @Column(nullable = false)
-    private String clientId;
-
+    public Subscriber() {}
+  
+    public Subscriber(String clientId) {
+      this.id = clientId;
+    }
+    
+    
     public String getId() {
         return this.id;
     }
@@ -68,10 +60,10 @@ public class RemoteEvent implements Serializable {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof RemoteEvent)) {
+        if (!(obj instanceof Subscriber)) {
             return false;
         }
-        RemoteEvent other = (RemoteEvent) obj;
+        Subscriber other = (Subscriber) obj;
         if (id != null) {
             if (!id.equals(other.id)) {
                 return false;
@@ -80,29 +72,10 @@ public class RemoteEvent implements Serializable {
         return true;
     }
 
-    public EventVO getEvent() {
-        return event;
-    }
-
-    public void setEvent(EventVO event) {
-        this.event = event;
-    }
-
-    public String getClientId() {
-        return clientId;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-    
-    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
-
-   
 }
