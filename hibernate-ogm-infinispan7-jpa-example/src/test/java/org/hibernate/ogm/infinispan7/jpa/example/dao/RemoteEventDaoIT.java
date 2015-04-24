@@ -23,6 +23,7 @@
 package org.hibernate.ogm.infinispan7.jpa.example.dao;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -119,6 +120,53 @@ public class RemoteEventDaoIT {
         }
     }
 
+    @Test
+    public void testaddEventForMultipleSubscribers() throws Exception {
+        List<String> clientIds = new ArrayList<String>(100);
+        for (int i = 0; i < 100; i++) {
+            String clientId = UUID.randomUUID().toString();
+            clientIds.add(clientId);
+            remoteEventDAO.registreClientId(clientId);
+        }
+        
+        long startTime = System.currentTimeMillis();
+        for (int i = 0; i < 2; i++) {
+            EventVO entity = createTestEvent(String.format("My #%s event", i), EventType.UPDATE);
+            remoteEventDAO.addEvent(entity);
+        }
+        System.out.print(String.format("Time to publish : %s sec",(System.currentTimeMillis()- startTime)/1000));
+        
+        for (String string : clientIds) {
+            List<RemoteEvent> eventsForClientId = remoteEventDAO.retreiveEventsForClientId(string);
+            Assert.assertEquals(2, eventsForClientId.size());
+            Assert.assertEquals(String.format("My #%s event", 0), eventsForClientId.get(0).getEvent().getEventObj());
+        }
+        remoteEventDAO.removeAllSubscribers();
+        
+    }
+    
+    @Test
+    public void testAddEventForSpecificSubscribers() throws Exception {
+        List<String> clientIds = new ArrayList<String>(10);
+        for (int i = 0; i < 10; i++) {
+            String clientId = UUID.randomUUID().toString();
+            clientIds.add(clientId);
+            remoteEventDAO.registreClientId(clientId);
+        }
+        
+        EventVO entity = createTestEvent(String.format("My #%s event", 1), EventType.UPDATE);
+        long startTime = System.currentTimeMillis();
+        remoteEventDAO.addEvent(entity,clientIds);
+        System.out.print(String.format("Time to publish : %s sec",(System.currentTimeMillis()- startTime)/1000));
+        
+        for (String clientId : clientIds) {
+            List<RemoteEvent> eventsForClientId = remoteEventDAO.retreiveEventsForClientId(clientId);
+            Assert.assertEquals(1, eventsForClientId.size());
+            Assert.assertEquals(String.format("My #%s event", 1), eventsForClientId.get(0).getEvent().getEventObj());
+        }
+        remoteEventDAO.removeAllSubscribers();
+    }
+    
     private EventVO createTestEvent(String eventText, EventType type) throws IOException {
         EventVO eventVO = new EventVO();
         eventVO.setEventType(type);
@@ -126,5 +174,5 @@ public class RemoteEventDaoIT {
 
         return eventVO;
     }
-
+    
 }

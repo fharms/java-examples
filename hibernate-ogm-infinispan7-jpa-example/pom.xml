@@ -149,6 +149,7 @@
 						<exclude>src/test/resources/**</exclude>
 						<exclude>src/main/resources/**</exclude>
 						<exclude>.forge_settings</exclude>
+						<exclude>org.hibernate.ogm.infinispan7.jpa.example.model*/</exclude>
 						<exclude>bin/**</exclude>
 					</excludes>
 				</configuration>

@@ -49,17 +49,40 @@ public class RemoteEventDao {
     public void unregistredClientId(String clientId) {
         //no need to remove old events, this is handle by infinispan expiring reaper
         //if some reason a subscriber is not removed this is also handled by the infinispan expiring reaper
-        Subscriber subscriber = new Subscriber(clientId);
-        em.remove(em.merge(subscriber));
+        Subscriber subscriber = null;
+        if (clientId != null && (subscriber = em.find(Subscriber.class, clientId)) != null) {
+            em.remove(subscriber);
+        }
+    }
+    
+    public void removeAllSubscribers() {
+        Query query = em.createQuery("FROM Subscriber s");
+        
+        List<Subscriber> subscribers = query.getResultList();
+        for (Subscriber subscriber : subscribers) {
+            em.remove(subscriber);
+        }
     }
 
-    public void addEvent(EventVO entity) {
+    public void addEvent(EventVO event, List<String> clientId) {
+        em.persist(event);
+        for (String id : clientId) {
+            if (id != null || em.find(Subscriber.class, id) != null) {
+                RemoteEvent remoteEvent = new RemoteEvent();
+                remoteEvent.setClientId(id);
+                remoteEvent.setEvent(event);
+                em.persist(remoteEvent); 
+            }
+        }
+    }
+    public void addEvent(EventVO event) {
         Query query = em.createQuery("FROM Subscriber s");
         List<Subscriber> subscribers = query.getResultList();
+        em.persist(event);
         for (Subscriber subscriber : subscribers) {
             RemoteEvent remoteEvent = new RemoteEvent();
             remoteEvent.setClientId(subscriber.getId());
-            remoteEvent.setEvent(entity);
+            remoteEvent.setEvent(event);
             em.persist(remoteEvent);
         }
     }
@@ -81,7 +104,7 @@ public class RemoteEventDao {
     }
 
     private List<RemoteEvent> listAllByClientId(String clientId) {
-        if (clientId == null || em.getReference(Subscriber.class, clientId) == null) {
+        if (clientId == null || em.find(Subscriber.class, clientId) == null) {
             throw new IllegalArgumentException("Unknown subscriber, please registre a client first!");
         }
 

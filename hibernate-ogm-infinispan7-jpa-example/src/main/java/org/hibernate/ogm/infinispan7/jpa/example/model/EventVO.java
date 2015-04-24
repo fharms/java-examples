@@ -32,9 +32,9 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.TableGenerator;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 public class EventVO implements Serializable {
@@ -42,10 +42,10 @@ public class EventVO implements Serializable {
     private static final long serialVersionUID = 276256458073698397L;
 
     @Id
-    @TableGenerator(name = "EVENT_VO_GEN", table = "SEQUENCES", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_NUMBER", pkColumnValue = "SEQUENCE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "EVENT_VO_GEN")
+    @GeneratedValue(generator = "eventvo_uuid")
+    @GenericGenerator(name = "eventvo_uuid", strategy = "uuid2")
     @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    private String id;
 
     @Column(nullable = false)
     private EventType EventType;
@@ -53,11 +53,11 @@ public class EventVO implements Serializable {
     @Column(nullable = false)
     private byte[] obj;
 
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 

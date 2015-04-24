@@ -24,16 +24,14 @@ package org.hibernate.ogm.infinispan7.jpa.example.model;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.TableGenerator;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.search.annotations.Analyze;
 import org.hibernate.search.annotations.Field;
 import org.hibernate.search.annotations.Indexed;
@@ -44,12 +42,12 @@ public class RemoteEvent implements Serializable {
     private static final long serialVersionUID = -1935334468086191742L;
 
     @Id
-    @TableGenerator(name = "EVENT_GEN", table = "SEQUENCES", pkColumnName = "SEQ_NAME", valueColumnName = "SEQ_NUMBER", pkColumnValue = "SEQUENCE", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "EVENT_GEN")
+    @GeneratedValue(generator = "event_uuid")
+    @GenericGenerator(name = "event_uuid", strategy = "uuid2")
     @Column(name = "id", updatable = false, nullable = false)
-    private Long id;
+    private String id;
 
-    @ManyToOne(cascade = {CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "id_eventvo", nullable = false, updatable = false)
     private EventVO event;
 
@@ -57,11 +55,11 @@ public class RemoteEvent implements Serializable {
     @Column(nullable = false)
     private String clientId;
 
-    public Long getId() {
+    public String getId() {
         return this.id;
     }
 
-    public void setId(final Long id) {
+    public void setId(final String id) {
         this.id = id;
     }
 
