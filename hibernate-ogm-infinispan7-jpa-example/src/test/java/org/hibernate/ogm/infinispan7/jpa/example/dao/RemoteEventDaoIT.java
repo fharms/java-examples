@@ -56,13 +56,16 @@ public class RemoteEventDaoIT {
     public static WebArchive createDeployment() {
         WebArchive webArchive = ShrinkWrap
                 .create(WebArchive.class)
-                .addClass(RemoteEventDao.class)
                 .addPackage("org.hibernate.ogm.infinispan7.jpa.example.model")
+                .addPackage("org.hibernate.ogm.infinispan7.jpa.example.dao")
+                .addAsResource("org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-local.xml", "org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-local.xml")
+                .addAsResource("org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml", "org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml")
                 .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                 .setManifest(
                         new StringAsset(
                                 "Dependencies: org.hibernate:ogm services, org.hibernate.ogm.infinispan services, org.hibernate.search.orm:5.1 services"))
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+        System.out.println("Jar :"+webArchive.toString(true));
         return webArchive;
     }
 
@@ -134,7 +137,7 @@ public class RemoteEventDaoIT {
             EventVO entity = createTestEvent(String.format("My #%s event", i), EventType.UPDATE);
             remoteEventDAO.addEvent(entity);
         }
-        System.out.print(String.format("Time to publish : %s sec",(System.currentTimeMillis()- startTime)/1000));
+        System.out.print(String.format("Time to publish : %s ms",(System.currentTimeMillis()- startTime)));
         
         for (String string : clientIds) {
             List<RemoteEvent> eventsForClientId = remoteEventDAO.retreiveEventsForClientId(string);
@@ -157,7 +160,7 @@ public class RemoteEventDaoIT {
         EventVO entity = createTestEvent(String.format("My #%s event", 1), EventType.UPDATE);
         long startTime = System.currentTimeMillis();
         remoteEventDAO.addEvent(entity,clientIds);
-        System.out.print(String.format("Time to publish : %s sec",(System.currentTimeMillis()- startTime)/1000));
+        System.out.print(String.format("Time to publish : %s ms",(System.currentTimeMillis()- startTime)));
         
         for (String clientId : clientIds) {
             List<RemoteEvent> eventsForClientId = remoteEventDAO.retreiveEventsForClientId(clientId);

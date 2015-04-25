@@ -6,10 +6,14 @@
         <class>org.hibernate.ogm.infinispan7.jpa.example.model.Subscriber</class>
         <class>org.hibernate.ogm.infinispan7.jpa.example.model.EventVO</class>
         <properties>
+        	<!-- Changing from filebase to Infinispan gave huge performance from 3 sec to 177 ms -->
+        	<property name="hibernate.search.default.directory_provider" value="infinispan"/> 
+        	<property name="hibernate.search.default.exclusive_index_use" value="false"/>
             <property name="hibernate.transaction.jta.platform"
                       value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
              <property name="hibernate.ogm.datastore.provider"
                       value="infinispan" />
+             <property name="hibernate.ogm.infinispan.configuration_resource_name" value="org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-local.xml"/>
           </properties>
     </persistence-unit>
 </persistence>
