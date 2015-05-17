@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.hibernate.ogm.infinispan7.jpa.example.model;
+package com.fharms.ogm.infinispan7.jpa.example.model;
 
 public enum EventType {
     ADD, DELETE, UPDATE

@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.hibernate.ogm.infinispan7.jpa.example.dao;
+package com.fharms.ogm.infinispan7.jpa.example.dao;
 
 import java.util.List;
 
@@ -29,15 +29,16 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-import org.hibernate.ogm.infinispan7.jpa.example.model.EventVO;
-import org.hibernate.ogm.infinispan7.jpa.example.model.RemoteEvent;
-import org.hibernate.ogm.infinispan7.jpa.example.model.Subscriber;
+import com.fharms.ogm.infinispan7.jpa.example.model.EventVO;
+import com.fharms.ogm.infinispan7.jpa.example.model.RemoteEvent;
+import com.fharms.ogm.infinispan7.jpa.example.model.Subscriber;
 
 /**
  * DAO for RemoteEvent
  */
 @Stateless
 public class RemoteEventDao {
+    
     @PersistenceContext(unitName = "RemoteEventQueue")
     private EntityManager em;
 

@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.hibernate.ogm.infinispan7.jpa.example.dao;
+package com.fharms.ogm.infinispan7.jpa.example.dao;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,9 +29,6 @@ import java.util.UUID;
 
 import javax.inject.Inject;
 
-import org.hibernate.ogm.infinispan7.jpa.example.model.EventType;
-import org.hibernate.ogm.infinispan7.jpa.example.model.EventVO;
-import org.hibernate.ogm.infinispan7.jpa.example.model.RemoteEvent;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -43,6 +40,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import com.fharms.ogm.infinispan7.jpa.example.dao.RemoteEventDao;
+import com.fharms.ogm.infinispan7.jpa.example.model.EventType;
+import com.fharms.ogm.infinispan7.jpa.example.model.EventVO;
+import com.fharms.ogm.infinispan7.jpa.example.model.RemoteEvent;
 
 @RunWith(Arquillian.class)
 public class RemoteEventDaoIT {
@@ -56,10 +58,10 @@ public class RemoteEventDaoIT {
     public static WebArchive createDeployment() {
         WebArchive webArchive = ShrinkWrap
                 .create(WebArchive.class)
-                .addPackage("org.hibernate.ogm.infinispan7.jpa.example.model")
-                .addPackage("org.hibernate.ogm.infinispan7.jpa.example.dao")
-                .addAsResource("org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-local.xml", "org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-local.xml")
-                .addAsResource("org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml", "org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml")
+                .addPackage("com.fharms.ogm.infinispan7.jpa.example.model")
+                .addPackage("com.fharms.ogm.infinispan7.jpa.example.dao")
+                .addAsResource("com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml", "com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml")
+                .addAsResource("com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml", "com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml")
                 .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
                 .setManifest(
                         new StringAsset(
