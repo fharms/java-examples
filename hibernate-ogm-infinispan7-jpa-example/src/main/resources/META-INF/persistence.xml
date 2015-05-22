@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
   <persistence-unit name="RemoteEventQueue" transaction-type="JTA">
-  	<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
-        <class>org.hibernate.ogm.infinispan7.jpa.example.model.RemoteEvent</class>
-        <class>org.hibernate.ogm.infinispan7.jpa.example.model.Subscriber</class>
-        <class>org.hibernate.ogm.infinispan7.jpa.example.model.EventVO</class>
+  		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
+  		<!-- When using HibernateOgmPersistence provider it does not scan for entity classes -->
+        <class>com.fharms.ogm.infinispan7.jpa.example.model.RemoteEvent</class>
+        <class>com.fharms.ogm.infinispan7.jpa.example.model.Subscriber</class>
+        <class>com.fharms.ogm.infinispan7.jpa.example.model.EventVO</class>
         <properties>
         	<!-- Changing from filebase to Infinispan gave huge performance from 3 sec to 177 ms -->
         	<property name="hibernate.search.default.directory_provider" value="infinispan"/> 
@@ -13,7 +14,20 @@
                       value="org.hibernate.service.jta.platform.internal.JBossAppServerJtaPlatform" />
              <property name="hibernate.ogm.datastore.provider"
                       value="infinispan" />
-             <property name="hibernate.ogm.infinispan.configuration_resource_name" value="org/hibernate/ogm/infinispan7/jpa/example/dao/infinispan-local.xml"/>
+             <property name="hibernate.ogm.infinispan.configuration_resource_name" value="com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml"/>
           </properties>
+    </persistence-unit>
+    
+    <!-- If you want to run with Hibernate ORM and SQL database, change the persistence unitname
+    	 in the class com.fharms.ogm.infinispan7.jpa.example.dao.RemoteEventDao  
+    -->
+    <persistence-unit name="RemoteEventQueueSQL" transaction-type="JTA">
+    	<jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
+        <properties>
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+        	<!-- Changing from filebase to Infinispan gave huge performance from 3 sec to 177 ms -->
+        	<property name="hibernate.search.default.directory_provider" value="infinispan"/> 
+        	<property name="hibernate.search.default.exclusive_index_use" value="false"/>
+        </properties>
     </persistence-unit>
 </persistence>

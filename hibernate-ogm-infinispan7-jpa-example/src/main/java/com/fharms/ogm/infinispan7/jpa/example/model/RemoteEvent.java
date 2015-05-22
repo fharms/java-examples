@@ -20,38 +20,40 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.hibernate.ogm.infinispan7.jpa.example.model;
+package com.fharms.ogm.infinispan7.jpa.example.model;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.search.annotations.Analyze;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.Indexed;
 
 @Entity
-public class EventVO implements Serializable {
-
-    private static final long serialVersionUID = 276256458073698397L;
+@Indexed
+public class RemoteEvent implements Serializable {
+    private static final long serialVersionUID = -1935334468086191742L;
 
     @Id
-    @GeneratedValue(generator = "eventvo_uuid")
-    @GenericGenerator(name = "eventvo_uuid", strategy = "uuid2")
+    @GeneratedValue(generator = "event_uuid")
+    @GenericGenerator(name = "event_uuid", strategy = "uuid2")
     @Column(name = "id", updatable = false, nullable = false)
     private String id;
 
+    @ManyToOne
+    @JoinColumn(name = "id_eventvo", nullable = false, updatable = false)
+    private EventVO event;
+
+    @Field(analyze = Analyze.NO)
     @Column(nullable = false)
-    private EventType EventType;
-    
-    @Column(nullable = false)
-    private byte[] obj;
+    private String clientId;
 
     public String getId() {
         return this.id;
@@ -61,33 +63,37 @@ public class EventVO implements Serializable {
         this.id = id;
     }
 
-    public EventType getEventType() {
-        return EventType;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof RemoteEvent)) {
+            return false;
+        }
+        RemoteEvent other = (RemoteEvent) obj;
+        if (id != null) {
+            if (!id.equals(other.id)) {
+                return false;
+            }
+        }
+        return true;
     }
 
-    public void setEventType(EventType EventType) {
-        this.EventType = EventType;
+    public EventVO getEvent() {
+        return event;
     }
 
-    public Object getEventObj() throws ClassNotFoundException, IOException {
-        return deserialize(obj);
+    public void setEvent(EventVO event) {
+        this.event = event;
     }
 
-    public void setEventObj(Object obj) throws IOException {
-        this.obj = serialize(obj);
-    }
-    
-    private byte[] serialize(Object obj) throws IOException {
-        ByteArrayOutputStream b = new ByteArrayOutputStream();
-        ObjectOutputStream o = new ObjectOutputStream(b);
-        o.writeObject(obj);
-        return b.toByteArray();
+    public String getClientId() {
+        return clientId;
     }
 
-    private Object deserialize(byte[] bytes) throws IOException, ClassNotFoundException {
-        ByteArrayInputStream b = new ByteArrayInputStream(bytes);
-        ObjectInputStream o = new ObjectInputStream(b);
-        return o.readObject();
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
     
     @Override
@@ -97,4 +103,6 @@ public class EventVO implements Serializable {
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         return result;
     }
+
+   
 }
