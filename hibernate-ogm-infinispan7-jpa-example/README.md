@@ -1,6 +1,6 @@
 # Hibernate OGM with JPA and Infinispan on Wildfly 8.2
 
-For the blog post follow the link to [Hibernate OGM with JPA and Infinispan on Wildfly 8.2](http://fharms.github.io/2015/06/16/HibernateOGM-Infinispan-Wildfly/)
+For the blog post follow the link to [Hibernate OGM with JPA and Infinispan on Wildfly 8.2](http://fharms.github.io/2015/05/16/HibernateOGM-Infinispan-Wildfly/)
 
 #How to run ?
 
