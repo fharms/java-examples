@@ -78,7 +78,7 @@ public class MyTestEntityTest {
 
         dao.save(mySubClass);
 
-        MySubClass newEntity = dao.find("00001", MySubClass.class);
+        MySubClass newEntity = dao.find("MyFirstId", MySubClass.class);
         Assert.assertEquals(mySubClass.getNote(),newEntity.getNote());
         Assert.assertEquals(mySubClass.getName(),newEntity.getName());
         Assert.assertEquals(mySubClass.getId(),newEntity.getId());
