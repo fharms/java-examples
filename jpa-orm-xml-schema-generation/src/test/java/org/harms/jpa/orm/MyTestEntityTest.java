@@ -47,8 +47,7 @@ public class MyTestEntityTest {
     public static JavaArchive createDeployment() {
         return ShrinkWrap
                 .create(JavaArchive.class)
-                .addClass(MyTestEntity.class)
-                .addClass(MyTestDAO.class)
+                .addPackage(MyTestEntity.class.getPackage())
                 .addAsManifestResource("META-INF/persistence.xml",
                         "persistence.xml")
                 .addAsManifestResource("META-INF/orm.xml",
@@ -64,9 +63,25 @@ public class MyTestEntityTest {
         entity.setFreeText("Life is like a game of cards. The hand you are dealt is determinism;" +
                 " the way you play it is free will.");
         dao.save(entity);
-        MyTestEntity newEntity = dao.find("00001");
+        MyTestEntity newEntity = dao.find("00001", MyTestEntity.class);
         Assert.assertEquals(entity.getFreeText(),newEntity.getFreeText());
         Assert.assertEquals(entity.getId(),newEntity.getId());
+
+    }
+
+    @Test
+    public void testSuperClassWithNoId() {
+        MySubClass mySubClass = new MySubClass();
+        mySubClass.setId("MyFirstId");
+        mySubClass.setName("Superclass");
+        mySubClass.setName("The super hero of inheriting");
+
+        dao.save(mySubClass);
+
+        MySubClass newEntity = dao.find("00001", MySubClass.class);
+        Assert.assertEquals(mySubClass.getNote(),newEntity.getNote());
+        Assert.assertEquals(mySubClass.getName(),newEntity.getName());
+        Assert.assertEquals(mySubClass.getId(),newEntity.getId());
 
     }
 }

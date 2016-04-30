@@ -30,6 +30,20 @@
                  version="1.0">
 
     <description>XML Mapping file</description>
+
+    <mapped-superclass class="org.harms.jpa.orm.MySuperClass">
+        <attributes>
+            <basic name="name"/>
+        </attributes>
+    </mapped-superclass>
+
+    <entity class="org.harms.jpa.orm.MySubClass">
+        <attributes>
+            <id name="id" />
+            <basic name="note" />
+        </attributes>
+    </entity>
+
     <entity class="org.harms.jpa.orm.MyTestEntity">
         <table name="MYTESTENTIITY"/>
         <attributes>
