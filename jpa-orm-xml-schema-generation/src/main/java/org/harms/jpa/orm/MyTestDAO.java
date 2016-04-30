@@ -13,12 +13,13 @@ public class MyTestDAO {
     @PersistenceContext
     EntityManager em;
 
-    public void save(MyTestEntity entity) {
+    public void save(Object entity) {
         em.persist(entity);
     }
 
-    public MyTestEntity find(String id) {
-        return em.find(MyTestEntity.class,id);
+
+    public <T> T find(String id, Class<T> clazz) {
+        return em.find(clazz,id);
     }
 
 }
