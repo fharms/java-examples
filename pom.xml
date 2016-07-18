@@ -132,6 +132,7 @@
      <module>hibernate-ogm-infinispan7-jpa-example</module>
      <module>jboss-marshalling-example</module>
      <module>jpa-orm-xml-schema-generation</module>
+     <module>wildfly8-hibernate5</module>
  </modules>
 
 </project>
