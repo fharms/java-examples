@@ -29,14 +29,15 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import javax.ejb.EJB;
-import java.util.UUID;
+import java.util.Random;
 
 /**
- * System test for testing against JPA 2.1 With Wildfly 8.2.
+ * System test for testing against JPA 2.1 (Hibernate 5.2) With Wildfly 8.2.
  *
  */
 @RunWith(Arquillian.class)
@@ -53,13 +54,17 @@ public class Jpa21Wildfly82Test {
                 .addAsWebInfResource( "META-INF/jboss-deployment-structure.xml" );
     }
 
+
     @EJB
     Jpa21TestDao dao;
 
     @Test
-    public void testRiddingWithJPA21() throws Exception {
+    public void testWithHibernate5() throws Exception {
+        Random rand = new Random();
+
         Jpa21TestEntity entity = new Jpa21TestEntity();
-        entity.setId(UUID.randomUUID().toString());
-        dao.save(entity);
+        entity.setId((long) (rand.nextInt(50) + 1));
+        Jpa21TestEntity saveEntity = dao.save(entity);
+        Assert.assertEquals(entity.getId(),saveEntity.getId());
     }
 }

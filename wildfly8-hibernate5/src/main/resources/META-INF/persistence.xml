@@ -30,11 +30,10 @@
         version="2.1">
 
     <persistence-unit name="hibernate52Pu" transaction-type="JTA">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:jboss/datasources/ExampleDS</jta-data-source>
         <properties>
             <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-            <property name="jboss.as.jpa.providerModule" value="org.hibernate:4.3"/>
+            <property name="jboss.as.jpa.providerModule" value="org.hibernate:5.2"/>
         </properties>
     </persistence-unit>
 </persistence>

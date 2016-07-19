@@ -29,7 +29,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 /**
- * Created by fharms on 10/07/16.
+ * Test the Hibernate 5.2 is in play as we expected.
  */
 @Stateless
 public class Jpa21TestDao {
@@ -39,11 +39,17 @@ public class Jpa21TestDao {
     private EntityManager entityManager;
 
 
-    public void save(Jpa21TestEntity entity) {
+    public Jpa21TestEntity save(Jpa21TestEntity entity) {
         Session session = entityManager.unwrap( Session.class );
         session.persist(entity);
         session.flush();
         session.clear();
+
+        session.flush();
+        session.clear();
+
+        // EntityManager methods exposed through Session only as of 5.2
+        return session.find( Jpa21TestEntity.class, entity.getId());
     }
 
 }

@@ -26,19 +26,19 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 /**
- * Created by fharms on 10/07/16.
+ * Simple test entity for testing Hibernate 5.2
  */
 @Entity
 public class Jpa21TestEntity {
 
     @Id
-    private String Id;
+    private Long Id;
 
-    public String getId() {
+    public Long getId() {
         return Id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         Id = id;
     }
 }

@@ -55,8 +55,16 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+
   <build>
     <finalName>wildfly8-hibernate5</finalName>
+    <!-- resources>
+        <resource>
+            <filtering>false</filtering>
+            <directory>modules</directory>
+            <targetPath>../server/wildfly-dist_8.2.0.Final/wildfly-8.2.0.Final/modules</targetPath>
+        </resource>
+    </resources -->
     <plugins>
       <plugin>
         <groupId>com.mycila</groupId>
@@ -88,16 +96,16 @@
   <dependencies>
     <dependency>
       <groupId>org.jboss.spec</groupId>
-      <artifactId>jboss-javaee-6.0</artifactId>
+      <artifactId>jboss-javaee-7.0</artifactId>
+      <version>1.0.3.Final</version>
       <type>pom</type>
       <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>4.3.11.Final</version>
+      <version>5.2.1.Final</version>
       <scope>provided</scope>
     </dependency>
-
   </dependencies>
 </project>
