@@ -1,6 +1,6 @@
-#Wildfly 8.2 with JPA 2.1 experiment
+#Wildfly 8.2 with Hibernate 5.2
 
-The purpose of this example is to experiment if it possible to use JPA 2.1 & Hibernate 5.2 with WildFly 8.2
+The purpose of this example is to experiment if it possible to use Hibernate 5.2 with WildFly 8.2
 
 
 #How to run ?
