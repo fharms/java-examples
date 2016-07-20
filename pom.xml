@@ -2,7 +2,7 @@
 <!--
 
     The MIT License
-    Copyright (c) ${project.inceptionYear} Umbrew
+    Copyright (c) 2016 Flemming Harms
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -22,7 +22,9 @@
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
     THE SOFTWARE.
 
---><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+-->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.harms.javaee-examples</groupId>
     <artifactId>javaee-examples</artifactId>
@@ -35,6 +37,7 @@
         <version.arquillian_universe>1.0.0.Alpha3</version.arquillian_universe>
         <version.junit>4.12</version.junit>
      </properties>
+    <inceptionYear>2016</inceptionYear>
     <build>
         <plugins>
             <plugin>

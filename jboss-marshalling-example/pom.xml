@@ -119,6 +119,7 @@
           <excludes>
             <exclude>**/README</exclude>
             <exclude>**/LICENSE</exclude>
+            <exclude>**/marshalling.tmp</exclude>
             <exclude>src/test/resources/**</exclude>
             <exclude>src/main/resources/**</exclude>
             <exclude>.forge_settings</exclude>
