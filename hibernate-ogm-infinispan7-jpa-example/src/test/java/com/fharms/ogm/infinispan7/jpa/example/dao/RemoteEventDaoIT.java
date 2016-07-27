@@ -59,13 +59,15 @@ public class RemoteEventDaoIT {
                 .addPackage("com.fharms.ogm.infinispan7.jpa.example.dao")
                 .addAsResource("com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml", "com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml")
                 .addAsResource("com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml", "com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml")
-                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+                .addAsResource("META-INF/persistence.xml")
+                //Work around the problem addAsManifestResource is adding the wrong MANIFEST.MF
+                //because OSX is adding it's own MANIFEST to the classpath
                 .setManifest(
                         new StringAsset(
-                                    "Dependencies: org.hibernate.ogm:5.0 services, " +
-                                            "org.hibernate.ogm.infinispan:5.0 services, " +
-                                            "org.hibernate.search.orm:main services, " +
-                                            "org.infinispan.hibernate-search.directory-provider:for-hibernatesearch-5.6 services"))
+                                "Dependencies: org.hibernate.ogm:5.0 services, " +
+                                        "org.hibernate.ogm.infinispan:5.0 services, " +
+                                        "org.hibernate.search.orm:5.6 services, " +
+                                        "org.hibernate.search.engine:5.6 services" ))
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println("Jar :"+webArchive.toString(true));
         return webArchive;

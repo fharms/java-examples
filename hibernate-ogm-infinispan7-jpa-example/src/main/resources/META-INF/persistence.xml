@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<persistence xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.1" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="RemoteEventQueue" transaction-type="JTA">
+<persistence
+        xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+        version="2.1">
+
+    <persistence-unit name="RemoteEventQueue" transaction-type="JTA">
   		<provider>org.hibernate.ogm.jpa.HibernateOgmPersistence</provider>
   		<!-- When using HibernateOgmPersistence provider it does not scan for entity classes -->
         <class>com.fharms.ogm.infinispan7.jpa.example.model.RemoteEvent</class>
@@ -10,9 +15,7 @@
         	<!-- Changing from filebase to Infinispan gave huge performance from 3 sec to 177 ms -->
         	<property name="hibernate.search.default.directory_provider" value="infinispan"/>
         	<property name="hibernate.search.default.exclusive_index_use" value="false"/>
-            <property name="hibernate.ogm.datastore.provider"
-                      value="infinispan" />
-            <property name="jboss.as.jpa.providerModule" value="application" />
+            <property name="hibernate.ogm.datastore.provider" value="infinispan" />
             <property name="hibernate.ogm.infinispan.configuration_resource_name" value="com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml"/>
           </properties>
     </persistence-unit>
@@ -25,7 +28,7 @@
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="create" />
         	<!-- Changing from filebase to Infinispan gave huge performance from 3 sec to 177 ms -->
-        	<property name="hibernate.search.default.directory_provider" value="infinispan"/> 
+        	<property name="hibernate.search.default.directory_provider" value="infinispan"/>
         	<property name="hibernate.search.default.exclusive_index_use" value="false"/>
         </properties>
     </persistence-unit>

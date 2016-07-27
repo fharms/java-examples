@@ -38,9 +38,8 @@
 		<version.arquillian_core>1.1.8.Final</version.arquillian_core>
 		<version.junit>4.12</version.junit>
 		<version.hibernate-ogm>5.0.1.Final</version.hibernate-ogm>
-		<version.infinispan>8.2.1.Final</version.infinispan>
+		<version.infinispan>8.2.3.Final</version.infinispan>
 		<version.wildfly>10.0.0.Final</version.wildfly>
-		<version.hibernate-search>5.1.0.Final</version.hibernate-search>
 		<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
 	</properties>
 	<inceptionYear>2014</inceptionYear>
@@ -73,6 +72,11 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.infinispan</groupId>
+				<artifactId>infinispan-directory-provider</artifactId>
+				<version>${version.infinispan}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -95,6 +99,10 @@
 			<groupId>javax</groupId>
 			<artifactId>javaee-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.infinispan</groupId>
+			<artifactId>infinispan-directory-provider</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
@@ -187,9 +195,11 @@
 									<goal>verify</goal>
 								</goals>
 								<configuration>
-									<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
 									<redirectTestOutputToFile>false</redirectTestOutputToFile>
-									<arquillian.launch>arquillian-wildfly-managed</arquillian.launch>
+									<systemProperties>
+										<arquillian.launch>arquillian-wildfly-managed</arquillian.launch>
+										<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
+									</systemProperties>
 								</configuration>
 							</execution>
 						</executions>
