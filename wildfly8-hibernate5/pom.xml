@@ -124,6 +124,38 @@
                 <artifactId>maven-dependency-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>copy</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.jboss.logging</groupId>
+                                    <artifactId>jboss-logging</artifactId>
+                                    <version>3.3.0.Final</version>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jboss.modules.home}/org/hibernate/5.2.1.Final/</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.jboss.logging</groupId>
+                                    <artifactId>jboss-logging</artifactId>
+                                    <version>3.3.0.Final</version>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jboss.modules.home}/org/hibernate/commons-annotations/5.2.1.Final/</outputDirectory>
+                                </artifactItem>
+                                <artifactItem>
+                                    <groupId>org.hibernate.common</groupId>
+                                    <artifactId>hibernate-commons-annotations</artifactId>
+                                    <version>5.0.1.Final</version>
+                                    <overWrite>false</overWrite>
+                                    <outputDirectory>${jboss.modules.home}/org/hibernate/commons-annotations/5.2.1.Final/</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>unpack</id>
                         <phase>process-resources</phase>
                         <goals>
