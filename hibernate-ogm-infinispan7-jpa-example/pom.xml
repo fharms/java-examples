@@ -212,9 +212,11 @@
 									<goal>verify</goal>
 								</goals>
 								<configuration>
-									<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
-									<redirectTestOutputToFile>false</redirectTestOutputToFile>
-									<arquillian.launch>arquillian-wildfly-managed</arquillian.launch>
+									<systemProperties>
+										<jboss.home>${project.build.directory}/wildfly-${version.wildfly}</jboss.home>
+										<redirectTestOutputToFile>false</redirectTestOutputToFile>
+										<arquillian.launch>arquillian-wildfly-managed</arquillian.launch>
+									</systemProperties>
 								</configuration>
 							</execution>
 						</executions>

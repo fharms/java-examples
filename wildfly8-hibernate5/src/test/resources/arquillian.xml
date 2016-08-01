@@ -25,17 +25,16 @@
 -->
 <arquillian xmlns="http://jboss.org/schema/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
-  <engine>
-    <property name="deploymentExportPath">target</property>
-  </engine>
-
-  <!-- Container settings -->
-  <container qualifier="chameleon" default="true">
+  <container qualifier="arquillian-wildfly-managed" default="true">
+    <protocol type="jmx-as7">
+      <property name="executionType">REMOTE</property>
+    </protocol>
     <configuration>
-      <property name="chameleonTarget">wildfly:8.2.0.Final:managed</property>
-      <property name="serverConfig">standalone.xml</property>
-      <property name="javaVmArguments">-Darquillian.debug=true -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n</property>
+      <property name="outputToConsole">false</property>
+      <property name="jbossHome">${jboss.home}</property>
+      <property name="allowConnectingToRunningServer">false</property>
+      <!--  -XX:MaxPermSize=768m -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n -->
+      <property name="javaVmArguments">-Darquillian.debug=true -Djava.net.preferIPv4Stack=true -Xms512m -Xmx1024m -XX:MaxPermSize=768m</property>
     </configuration>
   </container>
-
 </arquillian>

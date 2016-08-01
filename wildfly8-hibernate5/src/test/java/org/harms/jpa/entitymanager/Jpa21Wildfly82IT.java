@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package org.harms.camel.jpa.entitymanager;
+package org.harms.jpa.entitymanager;
 
 import org.harms.orm.upgrade.Jpa21TestDao;
 import org.harms.orm.upgrade.Jpa21TestEntity;
@@ -41,17 +41,19 @@ import java.util.Random;
  *
  */
 @RunWith(Arquillian.class)
-public class Jpa21Wildfly82Test {
+public class Jpa21Wildfly82IT {
 
 
     @Deployment
     public static WebArchive createDeployment() {
-        return ShrinkWrap.create( WebArchive.class,"jpa2wildfly.war" )
-                .addClass( Jpa21TestDao.class )
-                .addClass( Jpa21TestEntity.class )
-                .addAsWebInfResource( EmptyAsset.INSTANCE, "beans.xml" )
-                .addAsResource( "META-INF/persistence.xml" )
-                .addAsWebInfResource( "META-INF/jboss-deployment-structure.xml" );
+        WebArchive webArchive = ShrinkWrap.create(WebArchive.class, "jpa2wildfly.war")
+                .addClass(Jpa21TestDao.class)
+                .addClass(Jpa21TestEntity.class)
+                .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
+                .addAsResource("META-INF/persistence.xml")
+                .addAsWebInfResource("META-INF/jboss-deployment-structure.xml");
+        System.out.println("Jar :"+webArchive.toString(true));
+        return webArchive;
     }
 
 
