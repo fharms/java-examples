@@ -6,7 +6,7 @@ For the blog post follow the link to [Hibernate OGM with JPA and Infinispan on W
 
 This example work with Wildfly 8.2 and using Arquillian ecosystem.
 
-For running the example is's required you have installed JDK 7+ and Maven 3+ 
+For running the example is's required you have installed JDK 8+ and Maven 3+ 
 
 > 
 mvn install -P wildfly

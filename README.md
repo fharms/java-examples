@@ -9,5 +9,5 @@ For running all examples use the following command
 Build Status
 ---------------
 
-[![Build Status](https://travis-ci.org/fharms/java-examples.svg?branch=master)](https://travis-ci.org/fharms/java-examples.svg?branch=master)
+[![Build Status](https://travis-ci.org/fharms/java-examples.svg?branch=master)](https://travis-ci.org/fharms/java-examples)
 
