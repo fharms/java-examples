@@ -38,12 +38,6 @@
     <build>
         <finalName>jpa-orm-xml-schema-generation</finalName>
     </build>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.arquillian_universe>1.0.0.Alpha3</version.arquillian_universe>
-    </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -52,13 +46,6 @@
                 <version>7.0</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>org.arquillian</groupId>
-                <artifactId>arquillian-universe</artifactId>
-                <version>${version.arquillian_universe}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -66,6 +53,10 @@
             <groupId>javax</groupId>
             <artifactId>javaee-api</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.arquillian.container</groupId>
+            <artifactId>arquillian-container-chameleon</artifactId>
         </dependency>
     </dependencies>
 </project>

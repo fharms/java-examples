@@ -2,7 +2,7 @@
 <!--
 
     The MIT License
-    Copyright (c) ${project.inceptionYear} Umbrew
+    Copyright (c) 2016 Umbrew
 
     Permission is hereby granted, free of charge, to any person obtaining a copy
     of this software and associated documentation files (the "Software"), to deal
@@ -26,16 +26,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>javaee-examples</artifactId>
+        <groupId>org.harms.javaee-examples</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
     <groupId>org.harms.systemtest.camel</groupId>
     <artifactId>camel-spring-arquillian</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.arquillian_universe>1.0.0.Alpha3</version.arquillian_universe>
         <version.camel>2.16.2</version.camel>
-        <version.junit>4.12</version.junit>
     </properties>
     <build>
         <finalName>Camel-Spring-Arquillian</finalName>
@@ -66,17 +68,6 @@
             </plugin>
         </plugins>
     </build>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.arquillian</groupId>
-                <artifactId>arquillian-universe</artifactId>
-                <version>${version.arquillian_universe}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <!-- camel dependencies -->
@@ -103,24 +94,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- logging -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>1.7.13</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${version.junit}</version>
-            <scope>test</scope>
-        </dependency>
         <!-- arquillian depenencies -->
 
         <dependency>
@@ -146,7 +119,6 @@
         <dependency>
             <groupId>org.arquillian.container</groupId>
             <artifactId>arquillian-container-chameleon</artifactId>
-            <version>1.0.0.Alpha6</version>
         </dependency>
 
     </dependencies>

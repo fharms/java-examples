@@ -1,0 +1,4 @@
+language: JAVA
+script: mvn -P wildfly install
+jdk:
+  - oraclejdk8
