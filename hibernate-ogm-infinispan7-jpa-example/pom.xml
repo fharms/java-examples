@@ -83,6 +83,7 @@
 		<dependency>
 			<groupId>org.hibernate.ogm</groupId>
 			<artifactId>hibernate-ogm-infinispan</artifactId>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.arquillian.junit</groupId>
@@ -103,6 +104,7 @@
 		<dependency>
 			<groupId>org.infinispan</groupId>
 			<artifactId>infinispan-directory-provider</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
