@@ -9,7 +9,7 @@
       <property name="jbossHome">${jboss.home}</property>
       <property name="allowConnectingToRunningServer">false</property>
       <!--  -XX:MaxPermSize=768m -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n -->
-      <property name="javaVmArguments">-Darquillian.debug=true -Djava.net.preferIPv4Stack=true -Xms512m -Xmx1024m -XX:MaxPermSize=768m</property>
+      <property name="javaVmArguments">-Darquillian.debug=true -Djava.net.preferIPv4Stack=true -Xms512m -Xmx1024m -XX:MaxPermSize=768m -agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=n</property>
     </configuration>
   </container>
 </arquillian>

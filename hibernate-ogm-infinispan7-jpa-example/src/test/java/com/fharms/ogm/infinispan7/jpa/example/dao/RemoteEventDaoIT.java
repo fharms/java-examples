@@ -22,13 +22,9 @@
  */
 package com.fharms.ogm.infinispan7.jpa.example.dao;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import javax.inject.Inject;
-
+import com.fharms.ogm.infinispan7.jpa.example.model.EventType;
+import com.fharms.ogm.infinispan7.jpa.example.model.EventVO;
+import com.fharms.ogm.infinispan7.jpa.example.model.RemoteEvent;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -41,10 +37,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import com.fharms.ogm.infinispan7.jpa.example.dao.RemoteEventDao;
-import com.fharms.ogm.infinispan7.jpa.example.model.EventType;
-import com.fharms.ogm.infinispan7.jpa.example.model.EventVO;
-import com.fharms.ogm.infinispan7.jpa.example.model.RemoteEvent;
+import javax.inject.Inject;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 @RunWith(Arquillian.class)
 public class RemoteEventDaoIT {
@@ -62,10 +59,15 @@ public class RemoteEventDaoIT {
                 .addPackage("com.fharms.ogm.infinispan7.jpa.example.dao")
                 .addAsResource("com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml", "com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-local.xml")
                 .addAsResource("com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml", "com/fharms/ogm/infinispan7/jpa/example/dao/infinispan-dist.xml")
-                .addAsResource("META-INF/persistence.xml", "META-INF/persistence.xml")
+                .addAsResource("META-INF/persistence.xml")
+                //Work around the problem addAsManifestResource is adding the wrong MANIFEST.MF
+                //because OSX is adding it's own MANIFEST to the classpath
                 .setManifest(
                         new StringAsset(
-                                "Dependencies: org.hibernate:ogm services, org.hibernate.ogm.infinispan services, org.hibernate.search.orm:5.1 services"))
+                                "Dependencies: org.hibernate.ogm:5.0 services, " +
+                                        "org.hibernate.ogm.infinispan:5.0 services, " +
+                                        "org.hibernate.search.orm:5.6 services, " +
+                                        "org.hibernate.search.engine:5.6 services" ))
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println("Jar :"+webArchive.toString(true));
         return webArchive;
