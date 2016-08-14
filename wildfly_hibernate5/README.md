@@ -16,4 +16,4 @@ This example work with WildFly 9.x and 10.x and using Arquillian ecosystem.
 
 For running the example is's required you have installed JDK 8+ and Maven 3+
 
-> mvn install test -P <wildfly10-bibernate511 | wildfly10-bibernate521 | wildfly10-bibernate522 | wildfly9-bibernate521>
+> mvn install test -P \<wildfly10-bibernate511 | wildfly10-bibernate521 | wildfly10-bibernate522 | wildfly9-bibernate521\>
