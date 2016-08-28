@@ -135,6 +135,7 @@
         <module>jpa-orm-xml-schema-generation</module>
         <module>wildfly8-hibernate5</module>
         <module>wildfly_hibernate5</module>
+        <module>camel-twitter-slack</module>
     </modules>
 
 </project>
