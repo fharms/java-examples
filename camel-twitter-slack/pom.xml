@@ -142,12 +142,6 @@
         </dependencies>
     </dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.twitter4j</groupId>
-            <artifactId>twitter4j-core</artifactId>
-            <version>4.0.4</version>
-        </dependency>
-
         <!-- Java EE 7 dependency -->
         <dependency>
             <groupId>javax</groupId>
