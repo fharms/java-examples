@@ -20,69 +20,78 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-    package integration;
+package com.github.fharms.mapping.model;
 
-import org.apache.camel.cdi.ContextName;
-import org.apache.camel.cdi.Uri;
-import org.apache.camel.component.mock.MockEndpoint;
-import org.apache.camel.model.ModelCamelContext;
-import org.harms.camel.integration.RiddingCamelTwitterSlackBuilder;
+import com.github.fharms.mapping.JpaCommand;
+import com.github.fharms.mapping.service.JpaCommandService;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
-import org.jboss.shrinkwrap.resolver.api.maven.Maven;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.wildfly.extension.camel.CamelAware;
 
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import java.util.Arrays;
+import java.util.List;
 
-/**
- * System test for testing against deployed and running camel route.
- */
-@CamelAware
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 @RunWith(Arquillian.class)
-public class RiddingCamelTwitterSlackTest {
+public class PersonTest {
 
     @Inject
-    @Uri("mock:result")
-    protected MockEndpoint resultEndpoint;
-
-    @Inject
-    @ContextName("camel-twitter-slack")
-    ModelCamelContext context;
+    JpaCommandService ps;
 
     @Deployment
     public static WebArchive createDeployment() {
         WebArchive webArchive = ShrinkWrap.create(WebArchive.class)
-                .addPackage(RiddingCamelTwitterSlackBuilder.class.getPackage().getName())
-                .addAsManifestResource("camel-twitter-slack.properties")
-                .addAsLibraries(Maven.resolver().resolve("org.apache.camel:camel-gson:2.17.0",
-                        "org.apache.camel:camel-twitter:2.17.0",
-                        "org.apache.camel:camel-xstream:2.17.0",
-                        "org.apache.camel:camel-slack:2.17.0",
-                        "org.twitter4j:twitter4j-core:4.0.4").withTransitivity().asFile())
+                .addPackage(Person.class.getPackage().getName())
+                .addPackage(JpaCommandService.class.getPackage().getName())
+                .addPackage(JpaCommand.class.getPackage().getName())
+                .addAsResource("META-INF/persistence.xml")
+                .addAsResource("log4j.properties")
                 .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml");
         System.out.println(webArchive.toString(true));
         return webArchive;
     }
 
     @Test
-    public void testRiddingTheCamel() throws Exception {
-       /* Uncomment this when the right keys are inserted into the camel-twitter-slack.properties
+    public void testPersistPerson() {
 
-       context.getRouteDefinition("twitter_search").adviceWith(context, new AdviceWithRouteBuilder() {
+
+        //Assert.assertEquals(person.getContacts(),person2.getContacts());
+        ps.runJpaCommand(new JpaCommand() {
             @Override
-            public void configure() throws Exception {
-                interceptSendToEndpoint(RiddingCamelTwitterSlackBuilder.slackUri)
-                        .to(resultEndpoint.getEndpointUri());
+            public void run(EntityManager em) {
+                ContactType emailContactType = new ContactType();
+                emailContactType.setType("EMAIL");
+
+                ContactType twitterContactType = new ContactType();
+                twitterContactType.setType("TWITTER");
+
+                List<ContactType> contactTypes = Arrays.asList(emailContactType, twitterContactType);
+
+                Person.ContactInformation contactInformation = new Person.ContactInformation();
+                contactInformation.setContactType(contactTypes);
+
+                Person person = new Person();
+                person.setContacts(Arrays.asList(contactInformation));
+                em.persist(person);
+
+
+                Person person2 = em.find(Person.class,person.getId());
+                assertEquals(person,person2);
+                assertTrue(person2.getContacts().size() > 0);
+                assertEquals(person.getContacts(),person2.getContacts());
 
             }
         });
 
-        resultEndpoint.setMinimumExpectedMessageCount(1);
-        resultEndpoint.assertIsSatisfied(10000);*/
     }
+
+
 }

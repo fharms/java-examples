@@ -23,73 +23,6 @@
     THE SOFTWARE.
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>org.harms.javaee-examples</groupId>
-    <artifactId>javaee-examples</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <packaging>pom</packaging>
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.arquillian_universe>1.0.0.Alpha3</version.arquillian_universe>
-        <version.junit>4.12</version.junit>
-    </properties>
-    <inceptionYear>2016</inceptionYear>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>2.6</version>
-                <configuration>
-                    <header>com/mycila/maven/plugin/license/templates/MIT.txt</header>
-                    <properties>
-                        <owner>Flemming Harms</owner>
-                        <email>Flemming.Harms@gmail.com</email>
-                    </properties>
-                    <excludes>
-                        <exclude>**/README</exclude>
-                        <exclude>**/LICENSE</exclude>
-                        <exclude>target/**</exclude>
-                    </excludes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.arquillian</groupId>
-                <artifactId>arquillian-universe</artifactId>
-                <version>${version.arquillian_universe}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.camel</groupId>
-                <artifactId>camel-core</artifactId>
-                <version>2.17.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.arquillian.container</groupId>
-                <artifactId>arquillian-container-chameleon</artifactId>
-                <version>1.0.0.Alpha6</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <dependencies>
-        <!-- logging -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
@@ -126,6 +59,11 @@
             <groupId>org.apache.camel</groupId>
             <artifactId>camel-core</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
     </dependencies>
 
     <modules>
@@ -138,6 +76,7 @@
         <module>wildfly_hibernate5</module>
         <module>camel-twitter-slack</module>
         <module>camel-entitymanager-example</module>
+        <module>jpa-mappings</module>
     </modules>
 
 </project>

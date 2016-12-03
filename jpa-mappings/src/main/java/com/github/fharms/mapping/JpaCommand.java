@@ -20,28 +20,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.fharms.converter;
+package com.github.fharms.mapping;
 
-import com.github.fharms.entity.Joke;
-import com.google.gson.internal.LinkedTreeMap;
-import org.apache.camel.Converter;
-import org.apache.camel.TypeConverters;
-
-import java.util.Map;
+import javax.persistence.EntityManager;
 
 /**
- * Convert Json data map to {@link Joke}
+ * Created by fharms on 03/12/2016.
  */
-@Converter
-public class JokeTypeConverter implements TypeConverters {
+public interface JpaCommand {
 
-    @Converter
-    public Joke toJoke(Map jsonMap) {
-        LinkedTreeMap values = (LinkedTreeMap) jsonMap.get("value");
-        Joke joke = new Joke();
-        joke.setId(Double.toString((Double) values.get("id")));
-        joke.setJokeText((String) values.get("joke"));
-        return joke;
-    }
-
+    void run(EntityManager em);
 }

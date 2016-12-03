@@ -20,43 +20,27 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
-package com.github.fharms.route;
+package com.github.fharms.mapping.service;
 
-import com.github.fharms.camel.entitymanager.CamelEntityManagerHandler;
-import com.github.fharms.entity.Joke;
-import org.apache.camel.Body;
-import org.apache.camel.Exchange;
-import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Assert;
+import com.github.fharms.mapping.model.ContactType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 
-/**
- * Make sure we forget nothing and our world is filled with fun and joy
- */
-@Component
 @Transactional
-public class JokeDAO {
+public class ContactTypeService {
 
     @PersistenceContext
     EntityManager em;
 
-    @SuppressWarnings("unused")
-    public Joke persistFunnyJoke(@Body Joke joke){
-        em.persist(joke);
-        return joke;
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public ContactType persist(ContactType contact){
+      em.persist(contact);
+      return contact;
     }
 
-    @SuppressWarnings("unused")
-    public void increaseDisplayCount(Exchange exchange){
-        //let's just test for fun that the Camel EntityManager is the same as bean entity manager
-        EntityManager camelEntityManager = exchange.getIn().getHeader(CamelEntityManagerHandler.CAMEL_ENTITY_MANAGER, EntityManager.class);
-        Assert.state(em.equals(camelEntityManager));
-        Joke joke = exchange.getIn().getBody(Joke.class);
-        joke.setCount(joke.getCount()+1);
-        exchange.getIn().setBody(joke);
+    public ContactType getContact(Long id) {
+        return em.find(ContactType.class,id);
     }
-
 }
