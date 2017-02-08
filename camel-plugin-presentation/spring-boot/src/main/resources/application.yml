@@ -1,0 +1,4 @@
+
+spring.main.sources: com.github.fharms.MySpringBootRouter
+
+my.schedule.delay: 10s
