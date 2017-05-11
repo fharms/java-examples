@@ -5,7 +5,6 @@ import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 /**
- * Created by fharms on 02/05/2017.
  */
 public class PersonDAO {
 

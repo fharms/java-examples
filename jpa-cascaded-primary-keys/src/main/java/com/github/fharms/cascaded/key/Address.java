@@ -1,21 +1,17 @@
 package com.github.fharms.cascaded.key;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Created by fharms on 02/05/2017.
  */
 @Entity
 public class Address implements Serializable{
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id;
+    private int adrId;
 
     @Override
     public boolean equals(Object o) {
@@ -26,13 +22,13 @@ public class Address implements Serializable{
             return false;
         }
         Address address = (Address) o;
-        return id == address.id &&
+        return adrId == address.adrId &&
             Objects.equals(street, address.street);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, street);
+        return Objects.hash(adrId, street);
     }
 
     private String street;
@@ -45,7 +41,7 @@ public class Address implements Serializable{
         this.street = street;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setAdrId(int adrId) {
+        this.adrId = adrId;
     }
 }

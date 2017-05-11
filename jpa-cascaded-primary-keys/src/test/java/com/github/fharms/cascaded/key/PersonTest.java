@@ -52,12 +52,29 @@ public class PersonTest {
 
     @Test
     public void testPersistCascadedKeys() {
-        final Person person = new Person();
-        person.setSocialSecurityId(UUID.randomUUID().toString());
+        PersonId personId = new PersonId();
+        personId.setPersonId(1);
+        personId.setSocialSecurityId(UUID.randomUUID().toString());
+
+        Person person = new Person();
+        person.setPersonId(personId);
         person.setName("Flemming Harms");
 
-        final Address address = new Address();
+        Address address = new Address();
         address.setStreet("Baker street");
+        person.setAddress(address);
+
+        dao.savePerson(person);
+
+        personId = new PersonId();
+        personId.setPersonId(2);
+        personId.setSocialSecurityId(UUID.randomUUID().toString());
+
+        person = new Person();
+        person.setName("Peter Pan");
+        person.setPersonId(personId);
+        address = new Address();
+        address.setStreet("Pan Street");
         person.setAddress(address);
 
         dao.savePerson(person);
