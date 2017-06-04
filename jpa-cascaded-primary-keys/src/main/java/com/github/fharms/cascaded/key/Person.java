@@ -1,6 +1,7 @@
 package com.github.fharms.cascaded.key;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.MapsId;
@@ -17,8 +18,8 @@ public class Person implements Serializable {
 
     private String name;
 
-    @MapsId("personId")
-    @OneToOne(cascade = javax.persistence.CascadeType.ALL)
+    @MapsId("id")
+    @OneToOne(cascade = CascadeType.ALL)
     private Address address;
 
     public Address getAddress() {

@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Address implements Serializable{
 
     @Id
-    private int adrId;
+    private String id;
 
     @Override
     public boolean equals(Object o) {
@@ -22,13 +22,13 @@ public class Address implements Serializable{
             return false;
         }
         Address address = (Address) o;
-        return adrId == address.adrId &&
+        return id == address.id &&
             Objects.equals(street, address.street);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(adrId, street);
+        return Objects.hash(id, street);
     }
 
     private String street;
@@ -41,7 +41,7 @@ public class Address implements Serializable{
         this.street = street;
     }
 
-    public void setAdrId(int adrId) {
-        this.adrId = adrId;
+    public void setId(String id) {
+        this.id = id;
     }
 }

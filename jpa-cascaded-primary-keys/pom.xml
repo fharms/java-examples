@@ -36,13 +36,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-core</artifactId>
-      <version>5.2.5.Final</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.hibernate</groupId>
-      <artifactId>hibernate-entitymanager</artifactId>
-      <version>5.2.5.Final</version>
+      <version>5.2.10.Final</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -53,6 +47,10 @@
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.wildfly.swarm</groupId>
+      <artifactId>logging</artifactId>
     </dependency>
     <dependency>
       <groupId>org.wildfly.swarm</groupId>

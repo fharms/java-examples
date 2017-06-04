@@ -11,15 +11,15 @@ import java.util.Objects;
 @Embeddable
 public class PersonId implements Serializable {
 
-    private int personId;
+    private String id;
     private String socialSecurityId;
 
-    public int getPersonId() {
-        return personId;
+    public String getId() {
+        return id;
     }
 
-    public void setPersonId(int personId) {
-        this.personId = personId;
+    public void setId(String id) {
+            this.id = id;
     }
 
     public String getSocialSecurityId() {
@@ -39,12 +39,12 @@ public class PersonId implements Serializable {
             return false;
         }
         PersonId personId1 = (PersonId) o;
-        return personId == personId1.personId &&
+        return id == personId1.id &&
             Objects.equals(socialSecurityId, personId1.socialSecurityId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(personId, socialSecurityId);
+        return Objects.hash(id, socialSecurityId);
     }
 }

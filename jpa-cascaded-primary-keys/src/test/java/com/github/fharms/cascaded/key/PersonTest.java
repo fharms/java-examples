@@ -9,7 +9,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.arquillian.CreateSwarm;
+import org.wildfly.swarm.config.logging.Level;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
+import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.spi.api.JARArchive;
 
 import javax.inject.Inject;
@@ -32,6 +34,7 @@ public class PersonTest {
         JARArchive deployment = ShrinkWrap.create( JARArchive.class );
         deployment.addPackage(Person.class.getPackage().getName())
             .addAsManifestResource("META-INF/persistence.xml", "persistence.xml")
+            .addAsManifestResource("META-INF/log4j.properties", "log4j.properties")
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return deployment;
     }
@@ -47,13 +50,19 @@ public class PersonTest {
                 ds.password("sa");
             })
         );
+        swarm.fraction(new LoggingFraction()
+            .defaultColorFormatter()
+            .consoleHandler(Level.ALL, "COLOR_PATTERN")
+            .rootLogger(Level.INFO, "CONSOLE")
+            .logger("org.hibernate.SQL", l -> l.level(Level.DEBUG))
+            .logger("org.hibernate.type.descriptor.sql", l -> l.level(Level.TRACE)));
         return swarm;
     }
 
     @Test
     public void testPersistCascadedKeys() {
         PersonId personId = new PersonId();
-        personId.setPersonId(1);
+        personId.setId("1");
         personId.setSocialSecurityId(UUID.randomUUID().toString());
 
         Person person = new Person();
@@ -67,7 +76,7 @@ public class PersonTest {
         dao.savePerson(person);
 
         personId = new PersonId();
-        personId.setPersonId(2);
+        personId.setId("2");
         personId.setSocialSecurityId(UUID.randomUUID().toString());
 
         person = new Person();
